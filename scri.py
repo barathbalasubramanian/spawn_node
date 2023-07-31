@@ -14,7 +14,6 @@ im2 = cv2.imread("image\scan_image.png")
 results = model.predict(source=im2)
 cv2.imwrite('image\save.png',results[0].plot())
 pre = results[0].boxes.cls.tolist()  
-# p = classes[int(pre[0])]
 p = []
 p.append(classes[int(pre[0])])
 print(p)
