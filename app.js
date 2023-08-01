@@ -19,9 +19,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+app.get('/' , (req,res) => {
+    console.log('page loading')
+    res.send('Hello')
+})
+
 app.post('/upload',upload.single('fileUpload'), (req, res) => {
 
     let dataToSendToPythonScript =  'req.file';
+    console.log(dataToSendToPythonScript)
     var detect;
 
     const python = spawn('python', ['scri.py' , dataToSendToPythonScript]);
@@ -48,4 +54,5 @@ app.post('/upload',upload.single('fileUpload'), (req, res) => {
     });
 })
 
+console.log('Running')
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
