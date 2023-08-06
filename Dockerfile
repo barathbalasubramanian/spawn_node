@@ -4,18 +4,27 @@ WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 
+# installing pip
+RUN apt-get update
+RUN apt-get install sudo 
+RUN sudo apt-get install python3 
+# RUN sudo apt-get install python3-pip
+
+
+
 # ---- Base Python ----
 FROM python:3.11-buster AS python-base
-WORKDIR /pyapp
+WORKDIR /app
 
+RUN pip install numpy==1.23.5
 # RUN pip install torch==1.4.0
+COPY ./requirements.txt req.txt
 
-COPY ./requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip3 install -r req.txt
 
 # ---- Copy Files/Build ----
 FROM base AS build
 WORKDIR /app
-COPY --from=python-base /pyapp /pyapp
+COPY --from=python-base /app /app
 COPY . .
 CMD ["node", "app.js"]
